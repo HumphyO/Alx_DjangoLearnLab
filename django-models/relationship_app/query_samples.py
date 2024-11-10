@@ -12,4 +12,4 @@ def get_library_books(library_name):
 
 #Function to relate librarian to library
 def get_library_librarian(library_name):
-    return Library.objects.get(name=library_name).librarian
+    return Librarian.objects.get(name=library_name).librarian
