@@ -11,5 +11,7 @@ def get_library_books(library_name):
     return Library.objects.get(name=library_name).books.all()
 
 #Function to relate librarian to library
-def get_library_librarian(library_name):
-    return Librarian.objects.get(name=library_name).librarian
+def get_librarian_for_library(library_name):
+    Library.objects.get(name=library_name)# Fetch the library by name
+    Librarian.objects.get(library=Library) # Fetch the librarian by library instance
+    return Librarian
