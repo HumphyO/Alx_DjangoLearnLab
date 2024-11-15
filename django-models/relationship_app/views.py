@@ -10,5 +10,5 @@ def list_books(request):
     book_list = []
     for book in books:
         book_list.append(f"{book.title} by {book.author.name}")
-    return render(request, 'relationship_app/list_books.html', {'books': books})
+    return render(request, "relationship_app/list_books.html", {'books': books})
 
