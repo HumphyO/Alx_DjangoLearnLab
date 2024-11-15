@@ -4,16 +4,8 @@ from .models import Book, Library
 
 
 # Create your views here.
-def book_list(request):
-    books = Book.objects.all()
-    return render(request, 'relationship_app/book_list.html',{'books': books})
+#Function_based view 
+def list_books(request):
+    books = Book.objects.all() #Retrieve all books from datbase
+    return render(request, 'relationship_applist_books.html',{'books': books})
 
-class LibraryDetailView(DetailView):
-    model = Library
-    template_name = 'relationship_app/library_detail.html'
-    context_object_name = 'library'
-
-    def get_context_data(self, **kwargs):
-        conext = super().get_context_data(**kwargs)
-        conext ['books'] = self.get_object.books.all()
-        
