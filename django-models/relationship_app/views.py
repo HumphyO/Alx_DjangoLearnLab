@@ -7,5 +7,5 @@ from .models import Book, Library
 #Function_based view 
 def list_books(request):
     books = Book.objects.all() #Retrieve all books from datbase
-    return render(request, 'relationship_applist_books.html',{'books': books})
+    return render(request, 'relationship_app/list_books.html',{'books': books})
 
