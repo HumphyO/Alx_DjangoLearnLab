@@ -55,15 +55,15 @@ def register_view(request):
 
 
 
-#admin_view
+#Admin_view
 def admin_view(request):
     return render(request, 'admin_view.html', {'role': 'Admin'})
 
-#librarian_view
+#Librarian_view
 def librarian_view(request):
     return render(request, 'librarian_view.html', {'role': 'Librarian'})
 
-#member_view
+#Member_view
 def member_view(request):
     return render(request, 'member_view.html', {'role': 'Member'})
 
