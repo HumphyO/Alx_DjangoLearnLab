@@ -4,7 +4,7 @@ from .models import Book
 from .models import Library
 from django.contrib.auth import login, logout, authenticate
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm 
-
+from django.contrib.auth.decorators import user_passes_test
 
 #Create Views here
 #Function-based view
@@ -36,6 +36,7 @@ def login_view(request):
         else:
             form = AuthenticationForm()
         return render(request, 'login.html', {'form': form})
+    
 def logout_view(request):
     logout(request)
     return redirect('home')
@@ -50,3 +51,27 @@ def register_view(request):
     else:
         form = UserCreationForm()
     return render(request, 'register.html', {'form': form})
+#Only admins have access to the view
+def admin_view(request):
+    return render(request, 'admin_view.html')
+
+#Only librarian have access to the view
+def librarian_view(request):
+    return render(request, 'librarian_view.html')
+
+#Only members have access to the view
+def member_view(request):
+    return render(request, 'member_view.html')
+
+def user_is_admin(user):
+    return user.userprofile.role == 'Admin'
+
+def user_is_librarian(user):
+    return user.userprofile.role == 'Librarian'
+
+def user_is_member(user):
+    return user.userprofile.role == 'Member'
+
+admin_view = user_passes_test(user_is_admin)(admin_view)
+librarian_view = user_passes_test(user_is_librarian)(librarian_view)
+member_view = user_passes_test(user_is_member)(member_view)
