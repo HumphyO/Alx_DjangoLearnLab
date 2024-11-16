@@ -1,8 +1,0 @@
-from django.shortcuts import render
-from django.contrib.auth.decorators import user_passes_test
-
-#Only admins have access to the view
-def admin_view(request):
-    return render(request, 'admin_view.html')
-
-admin_view = user_passes_test(admin_view)
