@@ -55,19 +55,17 @@ def register_view(request):
 
 
 
-#Only admins have access to the view
+#admin_view
 def admin_view(request):
     return render(request, 'admin_view.html')
 
-#Only librarian have access to the view
+#librarian_view
 def librarian_view(request):
     return render(request, 'librarian_view.html')
 
-#Only members have access to the view
+#member_view
 def member_view(request):
     return render(request, 'member_view.html')
-
-
 
 admin_view = user_passes_test(admin_view)
 librarian_view = user_passes_test(librarian_view)
