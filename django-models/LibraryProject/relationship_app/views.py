@@ -4,7 +4,9 @@ from .models import Book
 from .models import Library
 from django.contrib.auth import login, logout, authenticate
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm 
-from django.contrib.auth.decorators import user_passes_test, login_required, permission_required
+from django.contrib.auth.decorators import user_passes_test, login_required 
+from django.contrib.auth.decorators import permission_required
+
 
 #Create Views here
 #Function-based view
