@@ -4,14 +4,28 @@ from .models import Book
 from .models import Library
 from django.contrib.auth import login, logout, authenticate
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm 
-from django.contrib.auth.decorators import user_passes_test
+from django.contrib.auth.decorators import user_passes_test, login_required, permission_required
 
 #Create Views here
 #Function-based view
+@login_required
 def list_books(request):
     books = Book.objects.all()
     return render(request, 'relationship_app/list_books.html', {'book': books})
+@login_required
+@permission_required('relationship_app.can_add_book')
+def book_create(request): #Book creating logic
+    return redirect('book_list')
 
+@login_required
+@permission_required('relationship_app.can_change_book')
+def book_update(request, pk): #Updating a book logic
+    return redirect('book_list')
+
+@login_required
+@permission_required('relationship_app.can_delete_book')
+def book_delete(request, pk): #Deleting a book logic
+    return redirect('book_list')
 #Class_based view
 class LibraryDetailView(DetailView):
     model = Library
