@@ -47,10 +47,14 @@ def register_view(request):
         if form.is_valid():
             form.save()
             return redirect('login')
+        
   # Redirect to login page after registration
     else:
         form = UserCreationForm()
     return render(request, 'register.html', {'form': form})
+
+
+
 #Only admins have access to the view
 def admin_view(request):
     return render(request, 'admin_view.html')
@@ -63,15 +67,8 @@ def librarian_view(request):
 def member_view(request):
     return render(request, 'member_view.html')
 
-def user_is_admin(user):
-    return user.userprofile.role == 'Admin'
 
-def user_is_librarian(user):
-    return user.userprofile.role == 'Librarian'
 
-def user_is_member(user):
-    return user.userprofile.role == 'Member'
-
-admin_view = user_passes_test(user_is_admin)(admin_view)
-librarian_view = user_passes_test(user_is_librarian)(librarian_view)
-member_view = user_passes_test(user_is_member)(member_view)
+admin_view = user_passes_test(admin_view)
+librarian_view = user_passes_test(librarian_view)
+member_view = user_passes_test(member_view)
