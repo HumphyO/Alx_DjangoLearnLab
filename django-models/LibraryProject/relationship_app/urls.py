@@ -11,6 +11,9 @@ urlpatterns =[
     path('login/', LoginView.as_view(template_name='relationship_app/login.html', name='login')),
     path('admin/', views.admin_view, name = 'admin_view'),
     path('librarian/', views.librarian_view, name = 'librarian_view'),
-    path('member/', views.member_view, name = 'member')
+    path('member/', views.member_view, name = 'member'),
+    path('create/', views.book_create, name = 'book_create'),
+    path('update/', views.book_update, name = 'book_update'),
+    path('delete/', views.book_delete, name = 'book_delete'),
     ]
     
