@@ -57,15 +57,15 @@ def register_view(request):
 
 #admin_view
 def admin_view(request):
-    return render(request, 'admin_view.html')
+    return render(request, 'admin_view.html', {'role': 'Admin'})
 
 #librarian_view
 def librarian_view(request):
-    return render(request, 'librarian_view.html')
+    return render(request, 'librarian_view.html', {'role': 'Librarian'})
 
 #member_view
 def member_view(request):
-    return render(request, 'member_view.html')
+    return render(request, 'member_view.html', {'role': 'Member'})
 
 admin_view = user_passes_test(admin_view)
 librarian_view = user_passes_test(librarian_view)
