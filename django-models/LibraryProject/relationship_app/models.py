@@ -1,4 +1,5 @@
 from django.db import models
+from django.contrib.auth.models import PermissionsMixin
 from django.contrib.auth.models import User
 from django.db.models.signals import post_save
 from django.contrib.auth.models import User
@@ -14,6 +15,13 @@ class Author(models.Model):
 class Book(models.Model):
     title = models.CharField(max_length=100)
     author = models.ForeignKey(Author, on_delete=models.CASCADE)
+    
+    class Meta:
+        permissions = [
+            ("can_add_book", "Can Add Book")
+            ("can_change_book", "Can Change Book")
+            ("can_delete_book", "Can Delete Book")
+        ]
 
     def __str__(self):
         return self.title
