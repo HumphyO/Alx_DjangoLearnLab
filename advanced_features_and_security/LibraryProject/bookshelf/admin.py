@@ -21,7 +21,7 @@ class BookAdmin(admin.ModelAdmin):
 
 
 
-@admin.register(CustomUser)
+# Customize the admin interface
 class CustomeUserAdmin(UserAdmin):
     model = CustomUser
     fieldsets = UserAdmin.fieldsets + (
