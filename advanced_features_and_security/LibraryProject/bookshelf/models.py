@@ -83,7 +83,7 @@ class CustomUser(AbstractUser):
     def __str__(self):
         return self.username
 
-class CustomerUserManager(BaseUserManager):
+class CustomUserManager(BaseUserManager):
     def create_user(self, username, email, password = None, **extra_fields):
         if not email:
             raise ValueError("The Email Field must be set")
