@@ -23,7 +23,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-93^10pw%k&txig+b02+)*t2x_emf7e3aqui)_7scy)3#al+m(n'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
 ALLOWED_HOSTS = []
 
@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'bookshelf',
     'relationship_app',
+    'csp'
 ]
 
 MIDDLEWARE = [
@@ -49,6 +50,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'csp.middleware.CSPMMiddleWare',
 ]
 
 ROOT_URLCONF = 'LibraryProject.urls'
@@ -102,6 +104,23 @@ AUTH_PASSWORD_VALIDATORS = [
 ]
 
 AUTH_USER_MODEL = 'relationship_app.CustomerUser'
+
+SECURE_BROWSER_XSS_FILTER = True
+SECURE_CONTENT_TYPE_NOSNIFF = True
+
+# Prevent against clickjacking attacks
+X_FRAME_OPTIONS = 'DENY'
+
+#Ensures CSRF cookies are sent via HTTP
+CSRF_COOKIE_SECURE = True
+
+#Help to ensure session cookies are sent via HTTP
+SESSION_COOKIE_SECURE = True
+
+# Allow resources from the same domain
+CSP_DEFAULT_SRC = ("'self'",)
+CSP_SCRIPT_SRC = ("'self", "'unsafe_inline'")
+CSP = ("'safe'", "'unsafe_inline'")
 
 # Internationalization
 # https://docs.djangoproject.com/en/5.1/topics/i18n/
