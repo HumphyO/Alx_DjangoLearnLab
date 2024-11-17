@@ -39,8 +39,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'bookshelf',
     'relationship_app',
-    'csp',
-    'bookshelf.CustomUser'
+    'csp'
 ]
 
 MIDDLEWARE = [
@@ -104,7 +103,10 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-AUTH_USER_MODEL = 'relationship_app.CustomerUser'
+AUTH_USER_MODEL = [
+    'relationship_app.CustomerUser',
+    'bookshelf.CustomUser'
+]
 
 SECURE_BROWSER_XSS_FILTER = True
 SECURE_CONTENT_TYPE_NOSNIFF = True
