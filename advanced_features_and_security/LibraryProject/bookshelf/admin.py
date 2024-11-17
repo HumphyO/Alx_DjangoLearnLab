@@ -22,7 +22,7 @@ class BookAdmin(admin.ModelAdmin):
 
 
 # Customize the admin interface
-class CustomeUserAdmin(UserAdmin):
+class CustomeUserAdmin(admin.ModelAdmin):
     model = CustomUser
     fieldsets = UserAdmin.fieldsets + (
         (None, {'fields': ('date_of_birth', 'profile_photo')}),
@@ -31,5 +31,5 @@ class CustomeUserAdmin(UserAdmin):
         (None, {'fields': ('date_of_birth', 'profile_photo')})
     )
 
-
+# Register your model
 admin.site.register(CustomUser, CustomeUserAdmin)
