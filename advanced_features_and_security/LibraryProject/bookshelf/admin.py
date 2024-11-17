@@ -1,11 +1,11 @@
 from django.contrib import admin
 from .models import Book
 from django.contrib.auth.admin import UserAdmin
-from .models import CustomUser
+from .models import CustomUser, CustomUserAdmin
 from django.contrib.auth import get_user_model
 
-# Register your models here.
-admin.site.register(Book)
+# Register your model
+admin.site.register(CustomUser, CustomUserAdmin)
 
 # Customize The Admin Interface
 class BookAdmin(admin.ModelAdmin):
@@ -31,5 +31,4 @@ class CustomeUserAdmin(admin.ModelAdmin):
         (None, {'fields': ('date_of_birth', 'profile_photo')})
     )
 
-# Register your model
-admin.site.register(CustomUser, CustomeUserAdmin)
+
