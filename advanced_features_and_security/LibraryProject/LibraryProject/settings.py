@@ -131,7 +131,7 @@ SECURE_HSTS_SECONDS =  31536000 # One year
 SECURE_HSTS_INCLUDE_SUBDOMAINS = True # Apply to subdomains
 SECURE_HSTS_PRELOAD = True # Allow preload for browsers
 
-SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWADED_PROTO', 'https')
+SECURE_PROXY_SSL_HEADER = ("HTTP_X_FORWADED_PROTO", 'https')
 
 # Internationalization
 # https://docs.djangoproject.com/en/5.1/topics/i18n/
