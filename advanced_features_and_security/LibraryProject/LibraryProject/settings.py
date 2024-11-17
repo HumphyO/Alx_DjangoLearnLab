@@ -123,6 +123,14 @@ CSP_SCRIPT_SRC = ("'self", "'unsafe_inline'")
 CSP = ("'safe'", "'unsafe_inline'")
 
 
+# Redirecting HTTP to HTTPS
+SECURE_SSL_REDIRECT =True
+
+# HTTP strict Transport Security
+SECURE_HSTS_SECONDS =  31536000 # One year
+SECURE_HSTS_INCLUDE_SUBDOMAINS = True # Apply to subdomains
+SECURE_HSTS_PRELOAD = True # Allow preload for browsers
+
 # Internationalization
 # https://docs.djangoproject.com/en/5.1/topics/i18n/
 
