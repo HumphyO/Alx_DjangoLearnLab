@@ -4,7 +4,7 @@ from django.contrib.auth.decorators import user_passes_test
 def user_is_admin(user):
     return user.profile_role == 'Admin'
 
-@user_passes_test(is_admin)
+@user_passes_test(user_is_admin)
 #Admin_view
 def admin_view(request):
 
