@@ -1,7 +1,7 @@
 from django import forms
 from django.contrib.auth.models import User
 from django.contrib.auth.forms import UserCreationForm
-from .models import Post
+from .models import Post, Comment
 
 #Create user form
 class UserCreationForm(UserCreationForm):
@@ -27,3 +27,10 @@ class PostForm(forms.ModelForm):
         super().__init__(*args, **kwargs)
         self.fields['title'].widget.attrs.update({'class': 'form-control'})
         self.fields['content'].widget.attrs.update({'class': 'form-control'})
+
+
+class CommentForm(forms.ModelForm):
+    class Meta:
+        model = Comment
+        fields = ['content']
+        
