@@ -1,29 +1,22 @@
 from django.shortcuts import render, redirect
-from django.contrib.auth import UserCreationForm, AuthenticationForm
-from django.contrib.auth import login, logout, authenticate
+from django.contrib.auth import UserCreationForm
+from django.contrib.auth.views import LoginView, LogoutView
 from django.contrib.auth.models import User
-from django.views.generic import ListView, DetailView, CreateView, UpdateView
-from .models import Post
+from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
+from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
+from .models import Post, User, Comments
+from .forms import CommentForm, ProfileForm, CreatePostForm
+from .forms import forms
 
 # Create your views here.
+class RegistrationForm(UserCreationForm):
+    email = forms.EmailField()
+    
+    class Meta:
+        model = User
+        fields = ['email',]
 
-#Login View
-def login_view(request):
-    if request.method == 'POST':
-        form = AuthenticationForm(request, data=request.POST)
-        username = request.POST('username')
-        password = request.POST('password')
-        user = authenticate(username=username, password=password)
-        if user is not None:
-            login(request, user)
-            return redirect('profile')
-        else:
-            form.add_error(None, 'Invalid username or password')
-
-    else:
-        form = AuthenticationForm()
-    return render(request, 'login.html', {'form': form})
 
 #Registration View
 def register(request):
@@ -37,56 +30,82 @@ def register(request):
         form = UserCreationForm()
     return render(request, 'register.html', {'form': form})
 
-#Logout View
-def logout_view(request):
-    logout(request)
-    return redirect('profile')
+#Login View
+def login_view(loginview):
+    template_name = 'login.html'
 
-#Profile view
-def profile_view(request):
+@login_required
+def edit_profile(request):
     if request.method == 'POST':
-        user = request.user
-        user.email = request.POST
-        user.save()
-        return redirect('profile')
-    return render(request, 'profile.html')
+        form = ProfileForm(request.POST, instance = request.user.profile)
+        if form.is_valid():
+            form.save()
+            return redirect('profile')
+    else:
+        form = ProfileForm(instance = request.user.profile)
+        return render(request, 'edit_profile.html', {'form': form})
+
+
+@login_required
+def profile(request):
+    return render(request, 'profile.html', {'user': request.user})
 
 # list View to display all blog posts
-def PostListView(Listview):
+def ListView(Listview):
     model = Post
     template_name = 'blog/blog_list.html'
 
 # Detail View to show individual blog posts
-def PostDetailView(DetailView):
+def DetailView(DetailView):
     model = Post
-    pk_url_kwarg = 'pk'
-    template_name = 'blog/blog_detail.html'
+    template_name = 'post_detail.html'
 
 # Create View to allow authenticated users to create new posts
-def PostCreateView(CreateView):
+def CreateView(LoginRequiredMixin, CreateView):
     model = Post
-    fields = ['title', 'content']
-    template_name = 'blog/blog_create.html'
+    form_class = CreatePostForm
+    template_name = 'post_create.html'
+    success_url = '/list/'
+
+    def form_valid(self, form):
+        form.instance.author = self.request.user
+        return super().form_valid(form)
 
 # Update View to enable authors to edit their posts
-def PostUpdateView(LoginRequiredMixins, UserPassesTestMixins, UpdateView):
+def UpdateView(LoginRequiredMixins, UserPassesTestMixins, UpdateView):
     model = Post
-    pk_url_kwarg = 'pk'
-    template_name = 'blog/blog_edit_form.html'
+    template_name = 'post_edit.html'
+    
+# Delete View to allow authors delete their posts
+def DeleteView(LoginRequiredmixins, UserPassesTestMixin, DeleteView):
+    model = Post
+    template_name = 'post_delete.html'
+    success_url = '/posts'
+    context_object_name = 'post'
 
     def test_func(self):
         post = self.get_object()
-        return self.request.user == post.author
-    
-# Delete View to allow authors delete their posts
-def PostDeleteView(LoginRequiredmixins, UserPassesTestMixin, DeleteView):
-    model = Post
-    pk_url_kwarg = 'pk'
-    template_name = 'blog/blog_delete_confirm.html'
+        return post.author ==self.request.user
 
-    def test_func(self):
-       post = self.get_object()
-       return self.request.user == post.author
+
+class CommentCreateView(CreateView):
+    model = Comments
+    template_name = 'comment_create.html'
+    form_class = CommentForm
+
+    def form_valid(self, form):
+        form.instance.author == self.request.user
+        return super().form_valid(form)
+
+class CommentUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
+    model = Comments
+    template_name = 'comment_update.html'
+
+   
+
+class CommentDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
+    model = Comments
+    template_name = 'comment_delete.html'
 
 
 
