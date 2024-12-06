@@ -1,18 +1,17 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title>My Blog</title>
-    <link rel="stylesheet" href="{% static 'css/style.css' %}">
-</head>
-<body>
-    <h1>All Posts</h1>
-    <ul>
-        {% for post in object_list %}
-            <li>
-                <h2><a href="{{ post.get_absolute_url }}">{{ post.title }}</a></h2>
-                <p>{{ post.content|truncatechars:200 }}</p>
-            </li>
-        {% endfor %}
-    </ul>
-</body>
-</html>
+{% extends 'base.html' %}
+
+{% block content %}
+  <h1>All Blog Posts</h1>
+  <a href="{% url 'post-create' %}" class="btn btn-primary">Create New Post</a>
+  <ul>
+    {% for post in posts %}
+      <li>
+        <h2><a href="{% url 'post-detail' post.pk %}">{{ post.title }}</a></h2>
+        <p>{{ post.content|truncatewords:30 }}</p>
+        <p><small>By {{ post.author }} on {{ post.created_at }}</small></p>
+      </li>
+    {% empty %}
+      <p>No posts available.</p>
+    {% endfor %}
+  </ul>
+{% endblock %}
