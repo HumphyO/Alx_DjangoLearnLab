@@ -4,7 +4,7 @@ from django.contrib.auth import login, logout, authenticate
 from django.contrib.auth.models import User
 from django.views.generic import ListView, DetailView, CreateView, UpdateView
 from .models import Post
-from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 
 # Create your views here.
 
@@ -69,22 +69,24 @@ def PostCreateView(CreateView):
     template_name = 'blog/blog_create.html'
 
 # Update View to enable authors to edit their posts
-def PostUpdateView(LoginRequiredMixins, UpdateView):
+def PostUpdateView(LoginRequiredMixins, UserPassesTestMixins, UpdateView):
     model = Post
     pk_url_kwarg = 'pk'
     template_name = 'blog/blog_edit_form.html'
 
     def test_func(self):
-        return self.get_object().author == self.request.user
+        post = self.get_object()
+        return self.request.user == post.author
     
 # Delete View to allow authors delete their posts
-def PostDeleteView(DeleteView):
+def PostDeleteView(LoginRequiredmixins, UserPassesTestMixin, DeleteView):
     model = Post
     pk_url_kwarg = 'pk'
     template_name = 'blog/blog_delete_confirm.html'
 
     def test_func(self):
-        return self.get_object().author == self.request.user
+       post = self.get_object()
+       return self.request.user == post.author
 
 
 
