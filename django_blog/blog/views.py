@@ -113,7 +113,7 @@ class SearchView(ListView):
   model = Post
   template_name = 'search_results.html'
 
-  def search_posts(request):
+def search_posts(request):
     query = request.GET.get('q') 
     if query:
         results = Post.models.objects.filter(
