@@ -130,7 +130,18 @@ def search_view(request):
     return render(request, 'search_results.html')
 
 
-def tagged_posts(request, tag_slug):
-    posts = Post.objects.filter(tags__slug= tag_slug)
-    return render(request, 'tagged_posts.html', {'posts': posts, 'tag': tag_slug})
+# def tagged_posts(request, tag_slug):
+#     posts = Post.objects.filter(tags__slug= tag_slug)
+#     return render(request, 'tagged_posts.html', {'posts': posts, 'tag': tag_slug})
 
+class PostByTagList(ListView):
+    model = Post
+    template_name = 'tagged_posts.html'
+
+    def get_queryset(self):
+        tag_slug = self.get('tag_slug')
+        if tag_slug:
+            return self.objects.filter(tags__slug=tag_slug)
+        else:
+
+            return self.objects.none()
