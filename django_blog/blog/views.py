@@ -134,7 +134,7 @@ def search_view(request):
 #     posts = Post.objects.filter(tags__slug= tag_slug)
 #     return render(request, 'tagged_posts.html', {'posts': posts, 'tag': tag_slug})
 
-class PostByTagList(ListView):
+class PostByTagListView(ListView):
     model = Post
     template_name = 'tagged_posts.html'
 
