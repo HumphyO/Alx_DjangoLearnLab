@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth import UserCreationForm
-from django.contrib.auth.views import LoginView, LogoutView
+from django.contrib.auth import Login, logout
 from django.contrib.auth.models import User
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
 from django.contrib.auth.decorators import login_required
@@ -32,8 +32,12 @@ def register(request):
     return render(request, 'register.html', {'form': form})
 
 #Login View
-def login_view(loginview):
-    template_name = 'login.html'
+def login_view(request):
+    return render(request, 'login.html')
+
+def logout_view(request):
+    logout(request)
+    return redirect ('logout.html')
 
 @login_required
 def edit_profile(request):
@@ -67,7 +71,7 @@ def PostDetailView(DetailView):
 def PostCreateView(LoginRequiredMixin, CreateView):
     model = Post
     form_class = Postforms
-    template_name = 'post_form.html'
+    template_name = 'post_create.html'
     success_url = '/list/'
 
     def form_valid(self, form):
@@ -111,15 +115,19 @@ class CommentDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
     template_name = 'comment_delete.html'
 
 
-def search_posts(request):
+def search_view(request):
     query = request.GET.get('q') 
     if query:
-        results = Post.models.objects.filter(
+        posts = Post.objects.filter(
             Q(title__icontains=query) |
             Q(content__icontains=query)|
             Q(tags__name__icontains=query)
-        ).distinct()
-        return render(request, 'search_results.html')
+        )
+    else:
+        posts = []
+        
+    context = {'posts': posts, 'query': query}
+    return render(request, 'search_results.html')
 
 
 
