@@ -7,7 +7,8 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from .models import Post, User, Comments
 from .forms import CommentForm, ProfileForm, CreatePostForm
-from .forms import forms
+from .forms import Postforms, forms
+from django.db.models import Q
 
 # Create your views here.
 class RegistrationForm(UserCreationForm):
@@ -61,10 +62,10 @@ def DetailView(DetailView):
     template_name = 'post_detail.html'
 
 # Create View to allow authenticated users to create new posts
-def CreateView(LoginRequiredMixin, CreateView):
+def PostCreateView(LoginRequiredMixin, CreateView):
     model = Post
-    form_class = CreatePostForm
-    template_name = 'post_create.html'
+    form_class = Postforms
+    template_name = 'post_form.html'
     success_url = '/list/'
 
     def form_valid(self, form):
@@ -72,8 +73,9 @@ def CreateView(LoginRequiredMixin, CreateView):
         return super().form_valid(form)
 
 # Update View to enable authors to edit their posts
-def UpdateView(LoginRequiredMixins, UserPassesTestMixins, UpdateView):
+def PostUpdateView(LoginRequiredMixins, UserPassesTestMixins, UpdateView):
     model = Post
+    form_class = Postforms
     template_name = 'post_edit.html'
     
 # Delete View to allow authors delete their posts
@@ -107,7 +109,20 @@ class CommentDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
     model = Comments
     template_name = 'comment_delete.html'
 
+class SearchView(ListView):
+  model = Post
+  template_name = 'search_results.html'
 
+  def get_queryset(self):
+    query = self.request.GET.get('q') 
+    if query:
+        return self.models.objects.filter(
+            Q(title__icontains=query) |
+            Q(content__icontains=query)|
+            Q(tags__name__icontains=query)
+        )
+    else:
+        return self.model.objects.none()
 
 
 
