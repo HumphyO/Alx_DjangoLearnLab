@@ -125,10 +125,12 @@ def search_view(request):
         )
     else:
         posts = []
-        
+
     context = {'posts': posts, 'query': query}
     return render(request, 'search_results.html')
 
 
-
+def tagged_posts(request, tag_slug):
+    posts = Post.objects.filter(tags__slug= tag_slug)
+    return render(request, 'tagged_posts.html', {'posts': posts, 'tag': tag_slug})
 
