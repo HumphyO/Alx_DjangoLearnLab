@@ -113,16 +113,15 @@ class SearchView(ListView):
   model = Post
   template_name = 'search_results.html'
 
-  def get_queryset(self):
-    query = self.request.GET.get('q') 
+  def search_posts(request):
+    query = request.GET.get('q') 
     if query:
-        return self.models.objects.filter(
+        results = Post.models.objects.filter(
             Q(title__icontains=query) |
             Q(content__icontains=query)|
             Q(tags__name__icontains=query)
-        )
-    else:
-        return self.model.objects.none()
+        ).distinct()
+        return render(request, 'search_results.html')
 
 
 
