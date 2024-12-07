@@ -25,6 +25,9 @@ class PostForm(forms.ModelForm):
     class Meta:
         models = Post
         fields = ['title', 'content']
+        widgets = {
+            'tags': TagWidget
+        }
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
