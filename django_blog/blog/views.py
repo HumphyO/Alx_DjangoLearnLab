@@ -5,7 +5,7 @@ from django.contrib.auth.models import User
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
-from .models import Post, User, Comments
+from .models import Post, CustomUser, Comment
 from .forms import CommentForm, ProfileForm, CreatePostForm
 from .forms import Postforms, forms
 from django.db.models import Q
@@ -15,7 +15,7 @@ class RegistrationForm(UserCreationForm):
     email = forms.EmailField()
     
     class Meta:
-        model = User
+        model = CustomUser
         fields = ['email',]
 
 
@@ -52,14 +52,16 @@ def profile(request):
     return render(request, 'profile.html', {'user': request.user})
 
 # list View to display all blog posts
-def ListView(Listview):
+def PostListView(Listview):
     model = Post
-    template_name = 'blog/blog_list.html'
+    template_name = 'post_list.html'
+    
 
 # Detail View to show individual blog posts
-def DetailView(DetailView):
+def PostDetailView(DetailView):
     model = Post
     template_name = 'post_detail.html'
+    context_object_name = 'post'
 
 # Create View to allow authenticated users to create new posts
 def PostCreateView(LoginRequiredMixin, CreateView):
@@ -75,11 +77,10 @@ def PostCreateView(LoginRequiredMixin, CreateView):
 # Update View to enable authors to edit their posts
 def PostUpdateView(LoginRequiredMixins, UserPassesTestMixins, UpdateView):
     model = Post
-    form_class = Postforms
     template_name = 'post_edit.html'
     
 # Delete View to allow authors delete their posts
-def DeleteView(LoginRequiredmixins, UserPassesTestMixin, DeleteView):
+def PostDeleteView(LoginRequiredmixins, UserPassesTestMixin, DeleteView):
     model = Post
     template_name = 'post_delete.html'
     success_url = '/posts'
@@ -91,7 +92,7 @@ def DeleteView(LoginRequiredmixins, UserPassesTestMixin, DeleteView):
 
 
 class CommentCreateView(CreateView):
-    model = Comments
+    model = Comment
     template_name = 'comment_create.html'
     form_class = CommentForm
 
@@ -100,18 +101,15 @@ class CommentCreateView(CreateView):
         return super().form_valid(form)
 
 class CommentUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
-    model = Comments
+    model = Comment
     template_name = 'comment_update.html'
 
    
 
 class CommentDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
-    model = Comments
+    model = Comment
     template_name = 'comment_delete.html'
 
-class SearchView(ListView):
-  model = Post
-  template_name = 'search_results.html'
 
 def search_posts(request):
     query = request.GET.get('q') 
