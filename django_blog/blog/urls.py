@@ -2,6 +2,7 @@ from . import views
 from django.urls import path, include
 from django.contrib.auth import views as auth_views
 
+
 urlpatterns = {
     path('login/', views.LoginView.as_view(template_name = 'login.html'), name = 'login'),
     path('logout/', views.LogoutView.as_view(), name = 'logout'),
@@ -15,5 +16,6 @@ urlpatterns = {
     path('/post/<int:pk>/comments/new/', views.CommentListView.as_view(), name = 'post-comments'),
     path('/comment/<int:pk>/update/', views.CommentUpdateView.as_view(), name = 'comment_update'),
     path('/comment/<int:pk>/delete/', views.CommentDeleteView.as_view(), name = 'comment_delete'),
-    path('/tags/<tag_name>/', views.searchView.as_view(), name = 'search')
+    path('/tags/<tag_name>/', views.searchView.as_view(), name = 'search'),
+    path('/tags/<slug:tag_slug>/', views.tagged_posts, name='tagged_posts'),
 }
