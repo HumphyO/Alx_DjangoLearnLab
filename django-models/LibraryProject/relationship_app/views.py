@@ -80,17 +80,17 @@ def is_member(user):
 
 
 #Admin_view
-def admin_view(request):
+def Admin_view(request):
     return render(request, 'admin_view.html', {'role': 'Admin'})
 
 #Librarian_view
-def librarian_view(request):
+def Librarian_view(request):
     return render(request, 'librarian_view.html', {'role': 'Librarian'})
 
 #Member_view
-def member_view(request):
+def Member_view(request):
     return render(request, 'member_view.html', {'role': 'Member'})
 
-admin_view = user_passes_test(admin_view)
-librarian_view = user_passes_test(librarian_view)
-member_view = user_passes_test(member_view)
+admin_view = user_passes_test(Admin_view)
+librarian_view = user_passes_test(Librarian_view)
+member_view = user_passes_test(Member_view)
