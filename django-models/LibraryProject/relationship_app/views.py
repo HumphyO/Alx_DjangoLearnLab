@@ -71,25 +71,25 @@ def register_view(request):
     return render(request, 'relationship_app/register.html', {'form': form})
 
 
-
+def is_admin(user):
+    return user.is_authenticated and user.role == 'Admin'
 
 #Admin_view
+@user_passes_test(is_admin, login_url='/login/')
 def Admin_view(request):
     return render(request, 'admin_view.html', {'role': 'Admin'})
 
-def is_admin(user):
-    return user.is_authenticated and user.profile.role == 'Admin'
 
 
 def is_librarian(user):
-    return user.is_authenticated and user.profile.role == 'Librarian'
+    return user.is_authenticated and user.role == 'Librarian'
 
 #Librarian_view
 def Librarian_view(request):
     return render(request, 'librarian_view.html', {'role': 'Librarian'})
 
 def is_member(user):
-    return user.is_authenticated and user.profile.role == 'Member'
+    return user.is_authenticated and user.role == 'Member'
 
 #Member_view
 def Member_view(request):
