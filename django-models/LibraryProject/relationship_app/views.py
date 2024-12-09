@@ -67,7 +67,7 @@ def register_view(request):
   # Redirect to login page after registration
     else:
         form = UserCreationForm()
-    return render(request, 'register.html', {'form': form})
+    return render(request, 'relationship_app/register.html', {'form': form})
 
 def is_admin(user):
     return user.is_authenticated and user.profile.role == 'Admin'
