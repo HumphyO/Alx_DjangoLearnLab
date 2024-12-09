@@ -37,6 +37,22 @@ def book_update(request, pk): #Updating a book logic
 @permission_required('relationship_app.can_delete_book')
 def book_delete(request, pk): #Deleting a book logic
     return redirect('book_list')
+
+@login_required
+@user_passes_test(user.userprofile == 'Admin')
+def admin_view(request):
+    return render(request, 'admin_view.html')
+
+@login_required
+@user_passes_test(user.userprofile.role == 'Librarian')
+def librarian_view(request):
+    return render(request, 'librarian_view.html')
+
+@login_required
+@user_passes_test(user.userprofile == 'Member')
+def member_view(request):
+    return render(request, 'member_view.html')
+
 #Class_based view
 class LibraryDetailView(DetailView):
     model = Library
@@ -80,30 +96,3 @@ def register_view(request):
     return render(request, 'relationship_app/register.html', {'form': form})
 
 
-# def is_admin(user):
-#     return user.is_authenticated and user.userprofile.role == 'Admin'
-
-# #Admin_view
-# @user_passes_test(is_admin)
-# def admin_view(request):
-#     return render(request, 'admin_view.html', {'role': 'Admin'})
-
-
-
-def is_librarian(user):
-    return user.is_authenticated and user.userprofile.role == 'Librarian'
-
-#Librarian_view
-def librarian_view(request):
-    return render(request, 'librarian_view.html', {'role': 'Librarian'})
-
-def is_member(user):
-    return user.is_authenticated and user.userprofile.role == 'Member'
-
-#Member_view
-def member_view(request):
-    return render(request, 'member_view.html', {'role': 'Member'})
-
-admin_view = user_passes_test(admin_view)
-librarian_view = user_passes_test(librarian_view)
-member_view = user_passes_test(member_view)
