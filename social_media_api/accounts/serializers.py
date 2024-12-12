@@ -12,7 +12,7 @@ class UserSerializer(serializers.ModelSerializer):
         write_only_fields = ('password',)
 
     def create(self, validated_data):
-        user = User.objects.create_user(validated_data)
+        user = get_user_model().objects.create_user(validated_data)
         token , created = Token.objects.get_or_create(user = user)
         return user, token
 
