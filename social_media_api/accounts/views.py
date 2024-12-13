@@ -1,5 +1,5 @@
 from django.shortcuts import render
-from rest_framework.response import response
+from rest_framework.response import Response
 from rest_framework.views import CreateAPIView, APIView
 from rest_framework.permissions import IsAuthenticated
 from rest_framework import generics, permissions
@@ -33,11 +33,11 @@ class UserViewSet(generics.GenericAPIView):
         user = self.request.user
         to_follow = self.get.object
         user.followers.add(to_follow)
-        return response({'message': 'Successfully followed User.'})
+        return Response({'message': 'Successfully followed User.'})
         
     
     def unfollow(self, request):
         user = self.request.user
         to_unfollow = self.get_object()
         user.followers.remove(to_unfollow)
-        return response({'message': 'User successfully unfollowed.'})
+        return Response({'message': 'User successfully unfollowed.'})
