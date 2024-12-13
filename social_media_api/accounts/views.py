@@ -27,7 +27,7 @@ class UserLoginAPIView(TokenAPIView):
 class UserViewSet(generics.GenericAPIView):
     queryset = CustomUser.objects.all()
     serializer_classes = UserSerializer
-    permission_classes = [IsAuthenticated]
+    permission_classes = [permissions.IsAuthenticated]
 
     def follow(self, request):
         user = self.request.user
