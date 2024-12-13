@@ -2,8 +2,7 @@ from django.shortcuts import render
 from rest_framework.response import response
 from rest_framework.views import CreateAPIView, APIView
 from rest_framework.permissions import IsAuthenticated
-from rest_framework import generics
-from rest_framework import permissions
+from rest_framework import generics, permissions
 from .serializers import UserSerializer, UserLoginSerializer
 from django.contrib.auth import get_user_model
 from rest_framework.permissions import AllowAny
@@ -25,7 +24,7 @@ class UserLoginAPIView(TokenAPIView):
     pass
 
 
-class UserViewSet(viewsets.ModelViewSet):
+class UserViewSet(generics.GenericAPIView):
     queryset = CustomUser.objects.all()
     serializer_classes = UserSerializer
     permission_classes = [IsAuthenticated]
