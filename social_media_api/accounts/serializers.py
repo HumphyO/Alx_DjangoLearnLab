@@ -6,9 +6,11 @@ from rest_framework.authtoken.models import Token
 User = get_user_model
 
 class UserSerializer(serializers.ModelSerializer):
+    followers = serializers.StringRelatedField(many=True, read_only=True)
+    following = serializers.StringRelatedField(many=True, read_only=True)
     class Meta:
         model = CustomUser
-        fields = ('id', 'username', 'password', 'bio', 'profile_picture')
+        fields = ('id', 'username', 'password', 'bio', 'profile_picture', 'followers', 'following')
         write_only_fields = ('password',)
 
     def create(self, validated_data):
@@ -40,3 +42,5 @@ class UserProfileSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
         fields = ['id', 'username', 'email', 'bio', 'profile_picture', 'followers', 'following']
+
+
