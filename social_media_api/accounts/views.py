@@ -26,7 +26,7 @@ class UserLoginAPIView(TokenAPIView):
 
 
 class UserViewSet(viewsets.ModelViewSet):
-    queryset = User.objects.alll()
+    queryset = CustomUser.objects.all()
     serializer_classes = UserSerializer
     permission_classes = [IsAuthenticated]
 
