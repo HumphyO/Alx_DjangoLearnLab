@@ -9,8 +9,8 @@ from django.contrib.auth import get_user_model
 from rest_framework.permissions import AllowAny
 from rest_framework.authtoken.models import TokenAPIView
 from .models import CustomUser
-from django.shortcuts import get_object_or_404
-from rest_framework import status
+from rest_framework import viewsets
+
 
 # Create your views here.
 
@@ -24,21 +24,21 @@ class UserCreateAPIView(CreateAPIView):
 class UserLoginAPIView(TokenAPIView):
     pass
 
-class FollowUserView(APIView):
-    def post (self, request, username):
-        user_to_follow = get_object_or_404()(CustomUser, username= username)
-        if user_to_follow ==request.user:
-            return response({'error': 'You cannot follow yourself.'}, status=status.HTTP_400_BAD_REQUEST)
+
+class UserViewSet(viewsets.ModelViewSet):
+    queryset = User.objects.alll()
+    serializer_classes = UserSerializer
+    permission_classes = [IsAuthenticated]
+
+    def follow(self, request):
+        user = self.request.user
+        to_follow = self.get.object
+        user.followers.add(to_follow)
+        return response({'message': 'Successfully followed User.'})
         
-        request.user.following.add(user_to_follow)
-        return response({'message': f'You are now following {username}.'}, status=status.HTTP_200_OK)
     
-class UnfollowUserView(APIView):
-    def post (self, request, username):
-        user_to_follow = get_object_or_404()(CustomUser, username= username)
-        if user_to_follow ==request.user:
-            return response({'error': 'You cannot unfollow yourself.'}, status = status.HTTP_400_BAD_REQUEST)
-        
-        request.user.following.add(user_to_follow)
-        return response({'message': f'You are now unfollowing {username}.'}, status=status.HTTP_200_OK)
-        
+    def unfollow(self, request):
+        user = self.request.user
+        to_unfollow = self.get_object()
+        user.followers.remove(to_unfollow)
+        return response({'message': 'User successfully unfollowed.'})
