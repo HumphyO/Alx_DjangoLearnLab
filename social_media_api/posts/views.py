@@ -60,27 +60,23 @@ class CommentViewSet(viewsets.ModelViewSet):
 
 def like_post(request, pk):
     post = get_object_or_404(Post, pk=pk)
-    user = request.user
+    like, created = Like.objects.get_or_create(user=request, post=post)
+    if created:
+         Notification.objects.create(
+            recipient = post.author,
+            actor = request.user,
+            verb = 'You liked the post',
+            target = post,
+         )
+         messages.success(request, 'You liked this post.')
+         return redirect('post')
 
-    if Like.object.filter(user=user, post=post).exists():
-        f'(Warning, "You have liked this post.")'
-        return redirect ('post_detail')
+
+
     
-    like, created = Like.objects.get_or_create(user=request.user, post=post)
-
-    notification = Notification.objects.create(
-        recipient = post.author,
-        actor = user,
-        verb = 'liked',
-        target = post,
-    )
-    messages.success(request, 'You liked this post.')
-    return redirect('post_detail')
 
 def unliked_post(request, pk):
     post = get_object_or_404(Post, pk=pk)
-    user = request.user
-
     like, created = Like.objects.get_or_create(user=request.user, post=post)
 
     if like:
