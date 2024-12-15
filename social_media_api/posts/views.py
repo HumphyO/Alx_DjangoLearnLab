@@ -66,7 +66,7 @@ def like_post(request, post_id):
         f'(Warning, "You have liked this post.")'
         return redirect ('post_detail', post_id = post_id)
     
-    like, created = Like.objects.get_or_create(user = user, post=post)
+    like, created = Like.objects.get_or_create(user = request.user, post=post)
 
     notification = Notification.objects.create(
         recipient = post.author,
@@ -81,7 +81,7 @@ def unliked_post(request, post_id):
     post = get_object_or_404()
     user = request.user
 
-    like, created = Like.objects.get_or_create(user = user, post=post)
+    like, created = Like.objects.get_or_create(user = request.user, post=post)
 
     if like:
         like.delete()
