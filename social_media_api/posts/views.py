@@ -21,6 +21,13 @@ class PostViewSet(viewsets.ModelViewSet):
         if user.is_staff:
             return Post.objects.all()
         return Post.objects.filter(author=user)
+    
+    def feed (self, request):
+        user = request.user
+        following_users = request.user.following.all()
+        posts = Post.objects.filter(author__in=following_users).order_by('-created_at')
+        serializer = self.get_serializer(posts, many=True)
+        return Response
 
 class CommentViewSet(viewsets.ModelViewSet):
     queryset = Comment.objects.all()
