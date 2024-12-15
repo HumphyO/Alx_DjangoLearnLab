@@ -1,9 +1,10 @@
-from django.shortcuts import render, redirect, get_list_or_404
+from django.shortcuts import render, redirect, get_object_or_404
 from rest_framework.exceptions import PermissionDenied
 from .models import Post, Comment, Like, Notification
 from .serializers import PostSerializer, CommentSerializer
 from rest_framework import permissions, viewsets
 from django.contrib import messages
+
 
 
 # Create your views here.
@@ -57,7 +58,7 @@ class CommentViewSet(viewsets.ModelViewSet):
 
 
 def like_post(request, post_id):
-    post = get_list_or_404(Post, pk=post_id)
+    post = get_object_or_404(Post, pk=post_id)
     user = request.user
 
     if Like.object.filter(user=user, post=post).exists():
@@ -76,7 +77,7 @@ def like_post(request, post_id):
     return redirect('post_detail', post_id = post_id)
 
 def unliked_post(request, post_id):
-    post = Post.get_object_all()
+    post = get_object_or_404()
     user = request.user
 
     like = Like.objects.create(user = user, post=post)
