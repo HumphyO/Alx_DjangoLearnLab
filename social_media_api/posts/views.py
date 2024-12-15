@@ -1,9 +1,10 @@
-from django.shortcuts import render, redirect, get_object_or_404
+from django.shortcuts import render, redirect
 from rest_framework.exceptions import PermissionDenied
 from .models import Post, Comment, Like, Notification
 from .serializers import PostSerializer, CommentSerializer
 from rest_framework import permissions, viewsets
 from django.contrib import messages
+from rest_framework.generics import get_object_or_404
 
 
 
@@ -80,7 +81,7 @@ def unliked_post(request, post_id):
     post = get_object_or_404()
     user = request.user
 
-    like = Like.objects.create(user = user, post=post)
+    like, created = Like.objects.get_or_create(user = user, post=post)
 
     if like:
         like.delete()
