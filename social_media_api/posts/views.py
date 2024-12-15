@@ -66,7 +66,7 @@ def like_post(request, post_id):
         f'(Warning, "You have liked this post.")'
         return redirect ('post_detail', post_id = post_id)
     
-    like = Like.objects.create(user = user, post=post)
+    like, created = Like.objects.get_or_create(user = user, post=post)
 
     notification = Notification.objects.create(
         recipient = post.author,
