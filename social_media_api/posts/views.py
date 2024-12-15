@@ -1,8 +1,9 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect, get_list_or_404
 from rest_framework.exceptions import PermissionDenied
-from .models import Post, Comment
+from .models import Post, Comment, Like, Notification
 from .serializers import PostSerializer, CommentSerializer
 from rest_framework import permissions, viewsets
+from django.contrib import messages
 
 
 # Create your views here.
@@ -53,3 +54,38 @@ class CommentViewSet(viewsets.ModelViewSet):
             return Response({'message': 'you are only allowed to delete your comments.'}, status=403)
         return super().destroy(request, *args, **kwargs)
 
+
+
+def like_post(request, post_id):
+    post = get_list_or_404(Post, pk=post_id)
+    user = request.user
+
+    if Like.object.filter(user=user, post=post).exists():
+        f'(Warning, "You have liked this post.")'
+        return redirect ('post_detail', post_id = post_id)
+    
+    like = Like.objects.create(user = user, post=post)
+
+    notification = Notification.objects.create(
+        recipient = post.author,
+        actor = user,
+        verb = 'liked',
+        target = post,
+    )
+    messages.success(request, 'You liked this post.')
+    return redirect('post_detail', post_id = post_id)
+
+def unliked_post(request, post_id):
+    post = Post.get_object_all()
+    user = request.user
+
+    like = Like.objects.create(user = user, post=post)
+
+    if like:
+        like.delete()
+        messages.success(request, 'You unliked Thi post')  
+
+    else: 
+        messages.warning(request, 'You have nit liked the psot')  
+        return redirect('post_detail' , post_id=post_id)
+    
