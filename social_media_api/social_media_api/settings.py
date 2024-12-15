@@ -94,7 +94,7 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
         'NAME': BASE_DIR / 'db.sqlite3',
-        'PORT': '8000'
+        'PORT': ''
     }
 }
 
@@ -108,6 +108,8 @@ SECURE_BROWSER_XSS_FILTER = True
 # Static file settings
 STATICFILES_STORAGE = 'django.contrib.staticfiles.storage.StaticFilesStorage'
 
+
+'STATIC_ROOT' = ()
 # Password validation
 # https://docs.djangoproject.com/en/5.1/ref/settings/#auth-password-validators
 
