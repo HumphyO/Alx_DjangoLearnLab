@@ -73,7 +73,7 @@ def like_post(request, pk, generics):
 
 
 
-def unliked_post(request, pk, generics):
+def unlike_post(request, pk, generics):
     post = generics.get_object_or_404(Post, pk=pk)
     like, created = Like.objects.get_or_create(user=request.user, post=post)
 
