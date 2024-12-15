@@ -58,8 +58,8 @@ class CommentViewSet(viewsets.ModelViewSet):
 
 
 
-def like_post(request, post_id):
-    post = get_object_or_404(Post, pk=post_id)
+def like_post(request, post_id, generics):
+    post = generics.get_object_or_404(Post, pk=post_id)
     user = request.user
 
     if Like.object.filter(user=user, post=post).exists():
@@ -77,8 +77,8 @@ def like_post(request, post_id):
     messages.success(request, 'You liked this post.')
     return redirect('post_detail', post_id = post_id)
 
-def unliked_post(request, post_id):
-    post = get_object_or_404()
+def unliked_post(request, post_id, generics):
+    post = generics.get_object_or_404()
     user = request.user
 
     like, created = Like.objects.get_or_create(user=request.user, post=post)
