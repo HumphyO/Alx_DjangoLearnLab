@@ -5,7 +5,7 @@ from .serializers import PostSerializer, CommentSerializer
 from rest_framework import permissions, viewsets
 from django.contrib import messages
 from rest_framework.generics import get_object_or_404
-
+from rest_framework import generics
 
 
 # Create your views here.
@@ -58,9 +58,9 @@ class CommentViewSet(viewsets.ModelViewSet):
 
 
 
-def like_post(request, pk):
-    post = get_object_or_404(Post, pk=pk)
-    like, created = Like.objects.get_or_create(user=request, post=post)
+def like_post(request, pk, generics):
+    post = generics.get_object_or_404(Post, pk=pk)
+    Like, created = Like.objects.get_or_create(user=request, post=post)
     if created:
          Notification.objects.create(
             recipient = post.author,
@@ -73,10 +73,8 @@ def like_post(request, pk):
 
 
 
-    
-
-def unliked_post(request, pk):
-    post = get_object_or_404(Post, pk=pk)
+def unliked_post(request, pk, generics):
+    post = generics.get_object_or_404(Post, pk=pk)
     like, created = Like.objects.get_or_create(user=request.user, post=post)
 
     if like:
