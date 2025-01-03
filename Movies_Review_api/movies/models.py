@@ -9,6 +9,12 @@ class Movie(models.Model):
     def __str__(self):
         return self.title
     
+class Author(models.Model):
+    name = models.CharField(max_length= 130)
+
+    def __str__(self):
+        return self.name
+    
 
 class Review(models.Model):
     RATING_CHOICES = [
@@ -21,7 +27,7 @@ class Review(models.Model):
         5, '5 - Excellent',
     ]
     movies = models.ForeignKey(Movie, on_delete=models.CASCADE, related_name='reviews')
-    director = models.ForeignKey()
+    author = models.ForeignKey(Author, on_delete=models.CASCADE)
     plot = models.TextField()
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now_add=True)
