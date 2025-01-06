@@ -3,7 +3,7 @@ from .models import Movie, Review
 from .serializers import MovieSerializer, ReviewSerializer
 
 from rest_framework.generics import ListAPIView, CreateAPIView, RetrieveAPIView
-from rest_framework.permissions import IsAuthenticated
+from rest_framework.permissions import IsAuthenticated, AllowAny
 from rest_framework import serializers
 from rest_framework.response import Response
 
@@ -11,7 +11,7 @@ from rest_framework.response import Response
 # Create your views here.
 # Movie API view
 class MovieAPIView(ListAPIView):
-    permission_classes = [IsAuthenticated]
+    permission_classes = [AllowAny]
 
     def get(self, request):
         movies = Movie.objects.all()
