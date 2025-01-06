@@ -23,7 +23,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-jh3zm6%^u)#dg!i991n=$=56a_a7&3!8!c=^e)ny-03^47$&ue'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
 ALLOWED_HOSTS = []
 
@@ -84,10 +84,11 @@ DATABASES = {
 }
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATIOM_CLASSES': [
-        'rest_framework.authentication.TokenAuthentication'
+        'rest_framework.authentication.TokenAuthentication' # Token-based authentication
+        'rest_framework.authentication.TokenAuthentication' # Session-based authentication
     ],
     'DEFAULT_PERMISSION_CLASSES': [
-        'rest_framework.permisssions.IsAuthenticated'
+        'rest_framework.permissions.IsAuthenticated'
     ]
 }
 
