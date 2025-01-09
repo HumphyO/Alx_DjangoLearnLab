@@ -29,7 +29,7 @@
 
 5. Access the Application
 
-   visit `http://127.0.0.1:8000/` in your web browser.
+   visit `http://127.0.0.1:8080/` in your web browser.
 
  # File structure
  Refer to the main repository for the complete project structure.
@@ -38,6 +38,3 @@
 
 Feel free to fork this project and submit pull requests. Suggestions are always welcome!
 
-# License
-
-This project is licensed under the [MIT License](LICENSE).
