@@ -1,38 +1,22 @@
 from django.db import models
+from django.core.validators import MinValueValidator, MaxValueValidator
 
 # Create your models here.
-class Movie(models.Model):
-    title = models.CharField(max_length=200)
-    genre = models.CharField(max_length=130)
-    release_date = models.DateTimeField(auto_now_add=True)
-
-    def __str__(self):
-        return self.title
-    
-class Author(models.Model):
-    name = models.CharField(max_length= 130)
+# User model
+class User(models.Model):
+    name = models.CharField(max_length=200)
+    email = models.EmailField()
+    password = models.CharField(max_length=130)
 
     def __str__(self):
         return self.name
     
-
-class Review(models.Model):
-    RATING_CHOICES = [
-
-        0, '0 - Very Poor',
-        1, '1 - Poor',
-        2, '2- Average',
-        3, '3 - Good', 
-        4, '4 - Very Good',
-        5, '5 - Excellent',
-    ]
-    movies = models.ForeignKey(Movie, on_delete=models.CASCADE, related_name='reviews')
-    author = models.ForeignKey(Author, on_delete=models.CASCADE)
-    plot = models.TextField()
-    created_at = models.DateTimeField(auto_now_add=True)
-    updated_at = models.DateTimeField(auto_now_add=True)
-
     
-    def __str__(self):
-        return f'Review for {self.movie.title} by {self.director.username}'
+# Review Model
+class Review(models.Model):
+    movie_title = models.CharField(max_length=200, default='Unknown')
+    review_content = models.TextField(default="")
+    rating = models.IntegerField(validators=[MinValueValidator(1), MaxValueValidator(5)])
+    user_id = models.ForeignKey(User, on_delete=models.CASCADE, default=1)
+    created_date = models.DateTimeField(auto_now_add=True)
     
