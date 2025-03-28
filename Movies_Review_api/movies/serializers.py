@@ -48,3 +48,5 @@ class ReviewSerializer(serializers.ModelSerializer):
        
 
        
+class MovieRecommendationSerializer(serializers.ModelSerializer):
+    movie_title = serializers.CharField()
