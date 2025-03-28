@@ -1,12 +1,13 @@
 from .models import Review, User
-from .serializers import ReviewSerializer, UserRegistrationSerializer, UserSerializer
-from rest_framework.generics import ListCreateAPIView, RetrieveUpdateDestroyAPIView, CreateAPIView
+from .serializers import ReviewSerializer, UserRegistrationSerializer, UserSerializer, MovieRecommendationSerializer
+from rest_framework.generics import ListCreateAPIView, RetrieveUpdateDestroyAPIView, CreateAPIView, GenericAPIView
 from rest_framework.authtoken.models import Token
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.pagination import PageNumberPagination
 from rest_framework import filters, status 
 from rest_framework.decorators import api_view
+from .recommendation import get_movie_recommendations
 
 # Create your views here.
 
@@ -101,9 +102,15 @@ class ReviewDetail(RetrieveUpdateDestroyAPIView):
         return super().destroy(request, *args, **kwargs)
 
 
+class MovieRecommendationview(GenericAPIView):
+    permission_classes = [IsAuthenticated]
 
-    
-    
+    def get(self, request):
+        recommended_movies = get_movie_recommendations(request.user)
+
+        return Response({"recommended_movies": recommended_movies})
+
+
 
 
 
